@@ -1,16 +1,31 @@
 import sys
+import pandas as pd
+import re
+from sqlalchemy import create_engine
 
 
 def load_data(messages_filepath, categories_filepath):
-    pass
+    df_messages = pd.read_csv(messages_filepath, dtypes={'id':'int16'}), 
+    df_categories = pd.read_csv(categories_filepath, dtypes={'id':'int16'})
+    df = df_messages.merge(df_categories, on='id')
+    return df
 
 
 def clean_data(df):
-    pass
+    df = df.drop_duplicates()
+    labels = df.loc[0, 'categories'].apply(lambda x: x[:-2]).to_list()
+    df_categories = df['categories'].str.split(pat=';', expand=True)
+    df_categories.columns = labels
+    for column in df_categories.columns:
+        df_categories[column] = df_categories[column].apply(lambda x: 0 if x[-1] == '0' else 1).astype('int8')
+    df = df.merge(df_categories, axis=1)
+    df = df.drop(columns=['categories'])
+    return df
 
 
 def save_data(df, database_filename):
-    pass  
+    engine = create_engine('sqlite:\\\' + database_filename)
+    df.to_sql('messages', engine, index=False)
 
 
 def main():

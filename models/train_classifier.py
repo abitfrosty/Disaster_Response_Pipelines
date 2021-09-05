@@ -1,12 +1,63 @@
 import sys
+import pandas as pd
+import pickle
+
+from sqlalchemy import create_engine
 
 
 def load_data(database_filepath):
-    pass
+    '''Load the data from the SQL database.
+    
+    Args:
+        database_filepath (str): Path to the SQL database.
+        
+    Returns:
+        X (pandas.Series): Feature of the dataset.
+        Y (pandas.DataFrame): Labels of the dataset.
+        labels (list): Labels' names.
+    '''
+    engine = create_engine('sqlite:///' + database_filepath)
+    df = pd.read_sql_table('messages', engine)
+    
+    features = ['message']
+    n_labels = 36
+    
+    X = df.loc[:, features]
+    Y = df.iloc[:, -n_labels:]
+    labels = df.columns.to_list()
+    
+    return X, Y, labels
 
 
 def tokenize(text):
-    pass
+    '''Clean, normalize, tokenize input text.
+    
+    Args:
+        text (str): Input text to process.
+        
+    Returns:
+        words (list): Tokens.
+    '''
+    url_regex = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+    url_pattern = re.compile(url_regex)
+    result = re.sub(url_pattern, ' ', text.lower())
+    
+    pattern = re.compile(r'[^A-Za-z]')
+    result = re.sub(pattern, ' ', result)
+    
+    tokens = word_tokenize(result)
+    lemmatizer = WordNetLemmatizer()
+    stemmer = PorterStemmer()
+    words = []
+    for word in tokens:
+        if word not in eng_stopwords:
+            # Lemmatization
+            lem = lemmatizer.lemmatize(word)
+            # Stemming
+            stem = stemmer.stem(lem)
+            words.append(stem)
+            
+    return words
 
 
 def build_model():
