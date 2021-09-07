@@ -1,0 +1,189 @@
+grid: GridSearchCV(cv=5,
+             estimator=Pipeline(steps=[('vect',
+                                        CountVectorizer(tokenizer=<function tokenize at 0x0000023FC4F78EE0>)),
+                                       ('tf-idf', TfidfTransformer()),
+                                       ('clf',
+                                        MultiOutputClassifier(estimator=MultinomialNB()))]),
+             param_grid={'clf__estimator__alpha': [0.001, 0.1, 1, 10, 50, 100,
+                                                   150, 200]},
+             verbose=3)
+classifier: Pipeline(steps=[('vect',
+                 CountVectorizer(tokenizer=<function tokenize at 0x0000023FC4F78EE0>)),
+                ('tf-idf', TfidfTransformer()),
+                ('clf',
+                 MultiOutputClassifier(estimator=MultinomialNB(alpha=0.1)))])
+parameters: {'clf__estimator__alpha': 0.1}
+grid_score: 0.21695593284691278
+
+Label: related, f1-score: 0.7936929337338635, precision: 0.8000814792994783, recall: 0.8144546147978642
+Label: request, f1-score: 0.8809466529637291, precision: 0.8801710060403507, recall: 0.8878718535469108
+Label: offer, f1-score: 0.9957114305697486, precision: 0.9971477700569202, recall: 0.9971395881006865
+Label: aid_related, f1-score: 0.7366171618462208, precision: 0.7368252670190286, recall: 0.7387490465293669
+Label: medical_help, f1-score: 0.9029553683639947, precision: 0.9040884962923944, recall: 0.9239130434782609
+Label: medical_products, f1-score: 0.9395698568305791, precision: 0.9411286379448143, recall: 0.9536613272311213
+Label: search_and_rescue, f1-score: 0.9562590162975627, precision: 0.9567114510477046, recall: 0.9704424103737604
+Label: security, f1-score: 0.9730024680135926, precision: 0.964464102212634, recall: 0.9816933638443935
+Label: military, f1-score: 0.9642673188859389, precision: 0.9632118541801036, recall: 0.9706331045003814
+Label: child_alone, f1-score: 1.0, precision: 1.0, recall: 1.0
+Label: water, f1-score: 0.9181667935927652, precision: 0.9195298219392005, recall: 0.9380244088482075
+Label: food, f1-score: 0.8972783623810069, precision: 0.897904083867041, recall: 0.9111365369946606
+Label: shelter, f1-score: 0.8969786067404126, precision: 0.9011287209506259, recall: 0.9185736079328757
+Label: clothing, f1-score: 0.9803608961679132, precision: 0.9811039854415653, recall: 0.9851258581235698
+Label: money, f1-score: 0.9699767726640791, precision: 0.9762343349034471, recall: 0.9792143401983219
+Label: missing_people, f1-score: 0.9821098761117482, precision: 0.9764892549207232, recall: 0.9877955758962624
+Label: refugees, f1-score: 0.9505975156611088, precision: 0.9354467440333741, recall: 0.9662471395881007
+Label: death, f1-score: 0.9450646313291834, precision: 0.9516125043816601, recall: 0.9590007627765065
+Label: other_aid, f1-score: 0.8077766597750203, precision: 0.7945753637580416, recall: 0.8627002288329519
+Label: infrastructure_related, f1-score: 0.8992448394587869, precision: 0.8940106037513736, recall: 0.9298245614035088
+Label: transport, f1-score: 0.9348299107626205, precision: 0.9408345564205117, recall: 0.954233409610984
+Label: buildings, f1-score: 0.9328684967924844, precision: 0.9428751199821896, recall: 0.9527078565980168
+Label: electricity, f1-score: 0.968141948649457, precision: 0.9660431380034359, recall: 0.9780701754385965
+Label: tools, f1-score: 0.9877171074083527, precision: 0.9918673900534177, recall: 0.9918001525553013
+Label: hospitals, f1-score: 0.9813506194210715, precision: 0.9753610676717916, recall: 0.9874141876430206
+Label: shops, f1-score: 0.9924737343039648, precision: 0.9901075466864178, recall: 0.9948512585812357
+Label: aid_centers, f1-score: 0.9816354768428942, precision: 0.975737800413264, recall: 0.9876048817696415
+Label: other_infrastructure, f1-score: 0.9292238126613006, precision: 0.9167375666992239, recall: 0.9511823035850496
+Label: weather_related, f1-score: 0.8301343763981935, precision: 0.830514571313459, recall: 0.8360030511060259
+Label: floods, f1-score: 0.9173902290119644, precision: 0.9174345757335448, recall: 0.9296338672768879
+Label: storm, f1-score: 0.9105615257802044, precision: 0.9106499102185489, recall: 0.9214340198321892
+Label: fire, f1-score: 0.9866563248261612, precision: 0.9865393665142569, recall: 0.9908466819221968
+Label: earthquake, f1-score: 0.9287794297848172, precision: 0.9344216193957959, recall: 0.938977879481312
+Label: cold, f1-score: 0.9735469660766296, precision: 0.976757361935611, recall: 0.9815026697177727
+Label: other_weather, f1-score: 0.9236966305776468, precision: 0.9278859714753673, recall: 0.9469870327993898
+Label: direct_report, f1-score: 0.8384839976049914, precision: 0.8363165458203976, recall: 0.8485888634630053
+========================================
+f1-score final: 0.9059548559598929
+precision final: 0.9053296697521732
+recall final: 0.9181551402661243
+
+grid: GridSearchCV(cv=5,
+             estimator=Pipeline(steps=[('vect',
+                                        CountVectorizer(tokenizer=<function tokenize at 0x0000023FC4F78EE0>)),
+                                       ('tf-idf', TfidfTransformer()),
+                                       ('clf',
+                                        MultiOutputClassifier(estimator=DecisionTreeClassifier()))]),
+             param_grid={'clf__estimator__min_samples_leaf': [2, 3, 4, 5, 7, 10,
+                                                              13, 20],
+                         'clf__estimator__min_samples_split': [2, 3, 4, 7, 10,
+                                                               13, 20],
+                         'clf__estimator__random_state': [0],
+                         'clf__estimator__splitter': ['best', 'random']},
+             verbose=3)
+classifier: Pipeline(steps=[('vect',
+                 CountVectorizer(tokenizer=<function tokenize at 0x0000023FC4F78EE0>)),
+                ('tf-idf', TfidfTransformer()),
+                ('clf',
+                 MultiOutputClassifier(estimator=DecisionTreeClassifier(min_samples_leaf=13,
+                                                                        random_state=0,
+                                                                        splitter='random')))])
+parameters: {'clf__estimator__min_samples_leaf': 13, 'clf__estimator__min_samples_split': 2, 'clf__estimator__random_state': 0, 'clf__estimator__splitter': 'random'}
+grid_score: 0.2685960589593056
+
+Label: related, f1-score: 0.7894484554288593, precision: 0.7864838854146752, recall: 0.7942410373760488
+Label: request, f1-score: 0.8700212688499673, precision: 0.8720516440873877, recall: 0.8813882532418001
+Label: offer, f1-score: 0.9957114305697486, precision: 0.9971477700569202, recall: 0.9971395881006865
+Label: aid_related, f1-score: 0.760128596842841, precision: 0.7610016225611751, recall: 0.7623951182303585
+Label: medical_help, f1-score: 0.9121578786997185, precision: 0.911207800534966, recall: 0.9269641495041953
+Label: medical_products, f1-score: 0.9473864473511411, precision: 0.9477698121862882, recall: 0.9569031273836766
+Label: search_and_rescue, f1-score: 0.9661038224237312, precision: 0.96681504056184, recall: 0.973302822273074
+Label: security, f1-score: 0.973193183240874, precision: 0.9823960666099966, recall: 0.9820747520976354
+Label: military, f1-score: 0.9667669664804751, precision: 0.9649824131038085, recall: 0.9698703279938978
+Label: child_alone, f1-score: 1.0, precision: 1.0, recall: 1.0
+Label: water, f1-score: 0.963534041330397, precision: 0.9629588630312583, recall: 0.9643401983218917
+Label: food, f1-score: 0.9561778521179621, precision: 0.9557976594407217, recall: 0.9567124332570557
+Label: shelter, f1-score: 0.9414340969575837, precision: 0.9402826799366267, recall: 0.9445080091533181
+Label: clothing, f1-score: 0.9861122486596944, precision: 0.9856110195542827, recall: 0.9868421052631579
+Label: money, f1-score: 0.976716791752791, precision: 0.9764922589847438, recall: 0.9809305873379099
+Label: missing_people, f1-score: 0.985837635029752, precision: 0.9862320226385182, recall: 0.9891304347826086
+Label: refugees, f1-score: 0.9645519137492595, precision: 0.9626128702573308, recall: 0.9689168573607932
+Label: death, f1-score: 0.9699979314761756, precision: 0.9694775875572853, recall: 0.9721586575133486
+Label: other_aid, f1-score: 0.831869325680826, precision: 0.8255120993858099, recall: 0.8628909229595728
+Label: infrastructure_related, f1-score: 0.9004841221601535, precision: 0.8958998598059247, recall: 0.9296338672768879
+Label: transport, f1-score: 0.9512847556868428, precision: 0.9512610274577303, recall: 0.9595728451563692
+Label: buildings, f1-score: 0.9540404002368781, precision: 0.9528184359403797, recall: 0.9595728451563692
+Label: electricity, f1-score: 0.9746071479640329, precision: 0.9742647877290235, recall: 0.9797864225781846
+Label: tools, f1-score: 0.9877171074083527, precision: 0.9918673900534177, recall: 0.9918001525553013
+Label: hospitals, f1-score: 0.9818147934348789, precision: 0.9817446933775226, recall: 0.9876048817696415
+Label: shops, f1-score: 0.9925690898928685, precision: 0.9950665349408077, recall: 0.9950419527078566
+Label: aid_centers, f1-score: 0.9837301630752365, precision: 0.98538452464858, recall: 0.988367658276125
+Label: other_infrastructure, f1-score: 0.9310875773863374, precision: 0.9375616951586127, recall: 0.9527078565980168
+Label: weather_related, f1-score: 0.8847959190074236, precision: 0.884410473879561, recall: 0.8863463005339436
+Label: floods, f1-score: 0.9557586255356831, precision: 0.957473082424636, recall: 0.9595728451563692
+Label: storm, f1-score: 0.942480284067957, precision: 0.941909094292834, recall: 0.9431731502669718
+Label: fire, f1-score: 0.9877428635711893, precision: 0.9865494012663928, recall: 0.9902745995423341
+Label: earthquake, f1-score: 0.9724513397197578, precision: 0.9722897941618639, recall: 0.9731121281464531
+Label: cold, f1-score: 0.9806655430911441, precision: 0.9796803708494087, recall: 0.9822654462242563
+Label: other_weather, f1-score: 0.9342353296066139, precision: 0.9327117088852532, recall: 0.9481311975591151
+Label: direct_report, f1-score: 0.8239474084550764, precision: 0.8240069759271266, recall: 0.8403890160183066
+========================================
+f1-score final: 0.9196420528198157
+precision final: 0.9198124744802231
+recall final: 0.9262172641749304
+
+grid: GridSearchCV(cv=5,
+             estimator=Pipeline(steps=[('vect',
+                                        CountVectorizer(tokenizer=<function tokenize at 0x0000023FC4F78EE0>)),
+                                       ('tf-idf', TfidfTransformer()),
+                                       ('clf',
+                                        MultiOutputClassifier(estimator=RandomForestClassifier()))]),
+             param_grid={'clf__estimator__min_samples_leaf': [2, 3, 5, 10, 20],
+                         'clf__estimator__min_samples_split': [2, 3, 5, 10, 20],
+                         'clf__estimator__n_estimators': [64, 128, 160, 176,
+                                                          192, 208, 224, 240,
+                                                          256],
+                         'clf__estimator__n_jobs': [-1],
+                         'clf__estimator__random_state': [0]},
+             verbose=3)
+classifier: Pipeline(steps=[('vect',
+                 CountVectorizer(tokenizer=<function tokenize at 0x0000023FC4F78EE0>)),
+                ('tf-idf', TfidfTransformer()),
+                ('clf',
+                 MultiOutputClassifier(estimator=RandomForestClassifier(min_samples_leaf=2,
+                                                                        min_samples_split=5,
+                                                                        n_estimators=240,
+                                                                        n_jobs=-1,
+                                                                        random_state=0)))])
+parameters: {'clf__estimator__min_samples_leaf': 2, 'clf__estimator__min_samples_split': 5, 'clf__estimator__n_estimators': 240, 'clf__estimator__n_jobs': -1, 'clf__estimator__random_state': 0}
+grid_score: 0.24322940485386071
+
+Label: related, f1-score: 0.7997404629027256, precision: 0.8092988803729351, recall: 0.8203661327231121
+Label: request, f1-score: 0.8600980836187558, precision: 0.8834080133527122, recall: 0.881769641495042
+Label: offer, f1-score: 0.9957114305697486, precision: 0.9971477700569202, recall: 0.9971395881006865
+Label: aid_related, f1-score: 0.7940390483132301, precision: 0.7940610054966243, recall: 0.7950038138825324
+Label: medical_help, f1-score: 0.8839621559431846, precision: 0.8846277558747577, recall: 0.919717772692601
+Label: medical_products, f1-score: 0.9296020035335792, precision: 0.9542570006369576, recall: 0.9519450800915332
+Label: search_and_rescue, f1-score: 0.9558853046340978, precision: 0.9713160614782735, recall: 0.9704424103737604
+Label: security, f1-score: 0.973193183240874, precision: 0.9823960666099966, recall: 0.9820747520976354
+Label: military, f1-score: 0.9563095750286386, precision: 0.9672566831582784, recall: 0.9696796338672768
+Label: child_alone, f1-score: 1.0, precision: 1.0, recall: 1.0
+Label: water, f1-score: 0.9213767279958586, precision: 0.9383462923162667, recall: 0.9424103737604882
+Label: food, f1-score: 0.9179895896377336, precision: 0.9289660211628478, recall: 0.9303966437833715
+Label: shelter, f1-score: 0.9077077519292521, precision: 0.9216105216374156, recall: 0.9273455377574371
+Label: clothing, f1-score: 0.9764081957564948, precision: 0.9764108236851272, recall: 0.9839816933638444
+Label: money, f1-score: 0.968730803280211, precision: 0.9792811668123247, recall: 0.9788329519450801
+Label: missing_people, f1-score: 0.9823006000810917, precision: 0.9883167483262262, recall: 0.9881769641495042
+Label: refugees, f1-score: 0.9510743495622244, precision: 0.9682764101910666, recall: 0.9672006102212052
+Label: death, f1-score: 0.9361961054722708, precision: 0.9491860778276872, recall: 0.9559496567505721
+Label: other_aid, f1-score: 0.8067627668300009, precision: 0.884912490399763, recall: 0.8672768878718535
+Label: infrastructure_related, f1-score: 0.8971288441329044, precision: 0.9354054555684139, recall: 0.9305873379099924
+Label: transport, f1-score: 0.9304786517524982, precision: 0.9554627030797901, recall: 0.9532799389778794
+Label: buildings, f1-score: 0.9278446961351702, precision: 0.9292166328948824, recall: 0.9509916094584286
+Label: electricity, f1-score: 0.9675107501194458, precision: 0.9787334593572778, recall: 0.9782608695652174
+Label: tools, f1-score: 0.9877171074083527, precision: 0.9918673900534177, recall: 0.9918001525553013
+Label: hospitals, f1-score: 0.9814459719245847, precision: 0.9877585207255861, recall: 0.9876048817696415
+Label: shops, f1-score: 0.9925690898928685, precision: 0.9950665349408077, recall: 0.9950419527078566
+Label: aid_centers, f1-score: 0.9817308294594473, precision: 0.9879445238639664, recall: 0.9877955758962624
+Label: other_infrastructure, f1-score: 0.9290717684926365, precision: 0.9545992339652568, recall: 0.952326468344775
+Label: weather_related, f1-score: 0.8811078750025003, precision: 0.8821628186573094, recall: 0.8842486651411137
+Label: floods, f1-score: 0.932041552771361, precision: 0.9433681170834153, recall: 0.9439359267734554
+Label: storm, f1-score: 0.9162057013377644, precision: 0.9176310255096989, recall: 0.9263920671243325
+Label: fire, f1-score: 0.9862910649938189, precision: 0.9909304651540302, recall: 0.9908466819221968
+Label: earthquake, f1-score: 0.9713698872025952, precision: 0.9712380760828454, recall: 0.9721586575133486
+Label: cold, f1-score: 0.9714876667820964, precision: 0.981294229837187, recall: 0.9809305873379099
+Label: other_weather, f1-score: 0.9210143513874027, precision: 0.9229207210085995, recall: 0.9466056445461479
+Label: direct_report, f1-score: 0.8104120391449086, precision: 0.8458162870786455, recall: 0.8453470633104501
+========================================
+f1-score final: 0.9084104312046555
+precision final: 0.9205886973301216
+recall final: 0.9229860581405203
+

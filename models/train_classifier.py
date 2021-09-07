@@ -1,8 +1,23 @@
 import sys
 import pandas as pd
 import pickle
-
 from sqlalchemy import create_engine
+
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.multioutput import MultiOutputClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import classification_report
+
+from nltk import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
+from nltk.stem.porter import PorterStemmer
+
+nltk.download(['punkt', 'wordnet', 'stopwords'])
 
 
 def load_data(database_filepath):
@@ -52,24 +67,81 @@ def tokenize(text):
     for word in tokens:
         if word not in eng_stopwords:
             # Lemmatization
-            lem = lemmatizer.lemmatize(word)
+            token = lemmatizer.lemmatize(word)
             # Stemming
-            stem = stemmer.stem(lem)
-            words.append(stem)
+            token = stemmer.stem(token)
+            words.append(token)
             
     return words
 
 
 def build_model():
-    pass
+    '''Clean, normalize, tokenize input text.
+    
+    Args:
+        text (str): Input text to process.
+        
+    Returns:
+        words (list): Tokens.
+    '''
+    pipeline = Pipeline([
+                ('vect', CountVectorizer(tokenizer=tokenizer)),
+                ('tf-idf', TfidfTransformer()),
+                ('clf', MultiOutputClassifier(clf))
+            ])
+    grid = GridSearchCV(pipeline, param_grid=parameter, cv=5, verbose=3)
+    return grid
+
+
+def get_metrics():
+    return ['f1-score', 'precision', 'recall']
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
-    pass
+    '''Evaluate model on test set and print out metrics of each label.
+    
+    Args:
+        model (GridSearchCV): GridSearchCV instance.
+        X_test (pandas.Series): Samples of the test data set.
+        Y_test (pandas.DataFrame): Labels of the test data set.
+        category_names (list): List with labels names.
+        
+    Returns:
+        scores (list): List of dictionaries with each label metrics.
+        total_scores (dict): Dictionary with each metric avg value.
+    '''
+    metrics = get_metrics()
+    scores = []
+    total_scores = {}
+    Y_hat = model.predict(X_test)
+    for label in category_names:
+        report = classification_report(Y_test[label], Y_hat[label], zero_division=1, output_dict=True)
+        score = {'label': label}
+        # Update final scores for each label
+        for metric in metrics:
+            score[metric] = report['weighted avg'][metric]
+            if metric in total_scores:
+                total_scores[metric] += report['weighted avg'][metric]
+            else:
+                total_scores[metric] = 0
+        scores.append(score)
+    # Print out the metrics scores
+    for score in scores:
+        print(f'{label}: {metric}={score[metric]:.5}')
+    for metric in metrics:
+        print(f'Avg {metric} score={total_scores[metric]:.5}')
+    return scores, total_scores
 
 
 def save_model(model, model_filepath):
-    pass
+    '''Save the trained model to pickle file.
+    
+    Args:
+        model (sklearn.model_selection.GridSearchCV): GridSearchCV instance with the best estimator and parameters.
+        model_filepath (str): Destination.
+    '''
+    pickle.dump(model, open(model_filepath, 'wb'))
+    return True
 
 
 def main():
