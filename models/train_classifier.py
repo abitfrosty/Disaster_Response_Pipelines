@@ -1,6 +1,7 @@
 import sys
 import pandas as pd
 import pickle
+import re
 from sqlalchemy import create_engine
 
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
@@ -12,10 +13,13 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report
 
+import nltk
 from nltk import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.stem.porter import PorterStemmer
+
+
 
 nltk.download(['punkt', 'wordnet', 'stopwords'])
 
@@ -34,12 +38,12 @@ def load_data(database_filepath):
     engine = create_engine('sqlite:///' + database_filepath)
     df = pd.read_sql_table('messages', engine)
     
-    features = ['message']
+    features = 'message'
     n_labels = 36
     
     X = df.loc[:, features]
     Y = df.iloc[:, -n_labels:]
-    labels = df.columns.to_list()
+    labels = Y.columns.to_list()
     
     return X, Y, labels
 
@@ -86,16 +90,12 @@ def build_model():
         words (list): Tokens.
     '''
     pipeline = Pipeline([
-                ('vect', CountVectorizer(tokenizer=tokenizer)),
+                ('vect', CountVectorizer(tokenizer=tokenize, ngram_range=(1, 2))),
                 ('tf-idf', TfidfTransformer()),
-                ('clf', MultiOutputClassifier(RandomForestClassifier(random_state=0)))
+                ('clf', MultiOutputClassifier(DecisionTreeClassifier(random_state=0, splitter='random', min_samples_leaf=8, min_samples_split=44)))
             ])
-    grid = GridSearchCV(pipeline, param_grid=parameter, cv=5, verbose=3)
-    return grid
-
-
-def get_metrics():
-    return ['f1-score', 'precision', 'recall']
+    #grid = GridSearchCV(pipeline, param_grid=parameter, cv=5, verbose=3)
+    return pipeline
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
@@ -106,32 +106,10 @@ def evaluate_model(model, X_test, Y_test, category_names):
         X_test (pandas.Series): Samples of the test data set.
         Y_test (pandas.DataFrame): Labels of the test data set.
         category_names (list): List with labels names.
-        
-    Returns:
-        scores (list): List of dictionaries with each label metrics.
-        total_scores (dict): Dictionary with each metric avg value.
     '''
-    metrics = get_metrics()
-    scores = []
-    total_scores = {}
     Y_hat = model.predict(X_test)
-    for label in category_names:
-        report = classification_report(Y_test[label], Y_hat[label], zero_division=1, output_dict=True)
-        score = {'label': label}
-        # Update final scores for each label
-        for metric in metrics:
-            score[metric] = report['weighted avg'][metric]
-            if metric in total_scores:
-                total_scores[metric] += report['weighted avg'][metric]
-            else:
-                total_scores[metric] = 0
-        scores.append(score)
-    # Print out the metrics scores
-    for score in scores:
-        print(f'{label}: {metric}={score[metric]:.5}')
-    for metric in metrics:
-        print(f'Avg {metric} score={total_scores[metric]:.5}')
-    return scores, total_scores
+    report = classification_report(Y_test.loc[:,:], Y_hat[:,:], zero_division=1, target_names=category_names)
+    print(report)
 
 
 def save_model(model, model_filepath):
@@ -151,7 +129,7 @@ def main():
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y, category_names = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
-        
+
         print('Building model...')
         model = build_model()
         
@@ -168,10 +146,11 @@ def main():
 
     else:
         print('Please provide the filepath of the disaster messages database '\
-              'as the first argument and the filepath of the pickle file to '\
-              'save the model to as the second argument. \n\nExample: python '\
-              'train_classifier.py ../data/DisasterResponse.db classifier.pkl')
+            'as the first argument and the filepath of the pickle file to '\
+            'save the model to as the second argument. \n\nExample: python '\
+            'train_classifier.py ../data/DisasterResponse.db classifier.pkl')
 
 
 if __name__ == '__main__':
     main()
+
