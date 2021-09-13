@@ -57,9 +57,10 @@ def tokenize(text):
     url_pattern = re.compile(url_regex)
     result = re.sub(url_pattern, ' ', text.lower())
     
-    pattern = re.compile(r'[^A-Za-z]')
+    pattern = re.compile(r'[^A-Za-z]+')
     result = re.sub(pattern, ' ', result)
     
+    eng_stopwords = stopwords.words('english')
     tokens = word_tokenize(result)
     lemmatizer = WordNetLemmatizer()
     stemmer = PorterStemmer()
@@ -87,7 +88,7 @@ def build_model():
     pipeline = Pipeline([
                 ('vect', CountVectorizer(tokenizer=tokenizer)),
                 ('tf-idf', TfidfTransformer()),
-                ('clf', MultiOutputClassifier(clf))
+                ('clf', MultiOutputClassifier(RandomForestClassifier(random_state=0)))
             ])
     grid = GridSearchCV(pipeline, param_grid=parameter, cv=5, verbose=3)
     return grid
@@ -149,7 +150,7 @@ def main():
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y, category_names = load_data(database_filepath)
-        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
         
         print('Building model...')
         model = build_model()
