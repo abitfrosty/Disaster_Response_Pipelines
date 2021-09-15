@@ -8,8 +8,8 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.naive_bayes import MultinomialNB
+#from sklearn.ensemble import RandomForestClassifier
+#from sklearn.naive_bayes import MultinomialNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report
 
@@ -18,7 +18,6 @@ from nltk import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.stem.porter import PorterStemmer
-
 
 
 nltk.download(['punkt', 'wordnet', 'stopwords'])
@@ -89,13 +88,20 @@ def build_model():
     Returns:
         words (list): Tokens.
     '''
-    pipeline = Pipeline([
-                ('vect', CountVectorizer(tokenizer=tokenize, ngram_range=(1, 2))),
+    parameters = {
+        'vect__ngram_range': [(1, 1), (1, 2)],
+        'clf__estimator__random_state': [0],
+        'clf__estimator__splitter': ['random', 'best'],
+        'clf__estimator__min_samples_leaf': [2, 4, 8, 16],
+        'clf__estimator__min_samples_split': [2, 4, 8, 16, 32, 64]
+        }
+    model = Pipeline([
+                ('vect', CountVectorizer(tokenizer=tokenize)),
                 ('tf-idf', TfidfTransformer()),
-                ('clf', MultiOutputClassifier(DecisionTreeClassifier(random_state=0, splitter='random', min_samples_leaf=8, min_samples_split=44)))
+                ('clf', MultiOutputClassifier(DecisionTreeClassifier()))
             ])
-    #grid = GridSearchCV(pipeline, param_grid=parameter, cv=5, verbose=3)
-    return pipeline
+    model = GridSearchCV(model, param_grid=parameters, cv=5, verbose=3)
+    return model
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
