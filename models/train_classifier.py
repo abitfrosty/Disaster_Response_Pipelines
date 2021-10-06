@@ -8,8 +8,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split, GridSearchCV
-#from sklearn.ensemble import RandomForestClassifier
-#from sklearn.naive_bayes import MultinomialNB
+from sklearn.ensemble import AdaBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report
 
@@ -48,7 +47,7 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
-    '''Clean, normalize, tokenize input text.
+    '''Clean, normalize, filter stop words, tokenize input text.
     
     Args:
         text (str): Input text to process.
@@ -56,15 +55,18 @@ def tokenize(text):
     Returns:
         words (list): Tokens.
     '''
+    text = text.lower()
     url_regex = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     url_pattern = re.compile(url_regex)
-    result = re.sub(url_pattern, ' ', text.lower())
+    urls = re.findall(url_pattern, text)
+    for url in urls:
+        text = text.replace(url, 'urlplaceholder')
     
-    pattern = re.compile(r'[^A-Za-z]+')
-    result = re.sub(pattern, ' ', result)
+    pattern = re.compile(r'[^A-Za-z\d]+')
+    text = re.sub(pattern, ' ', text)
     
     eng_stopwords = stopwords.words('english')
-    tokens = word_tokenize(result)
+    tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
     stemmer = PorterStemmer()
     words = []
@@ -75,7 +77,6 @@ def tokenize(text):
             # Stemming
             token = stemmer.stem(token)
             words.append(token)
-            
     return words
 
 
@@ -88,19 +89,54 @@ def build_model():
     Returns:
         words (list): Tokens.
     '''
-    parameters = {
-        'vect__ngram_range': [(1, 1), (1, 2)],
-        'clf__estimator__random_state': [0],
-        'clf__estimator__splitter': ['random', 'best'],
-        'clf__estimator__min_samples_leaf': [2, 4, 8, 16],
-        'clf__estimator__min_samples_split': [2, 4, 8, 16, 32, 64]
+    # Adaboost off due to much cpu time and recources consumption
+    using_adaboost = False
+    if using_adaboost:
+        parameters = {
+            'clf': [DecisionTreeClassifier()],
+            'vect__ngram_range': [(1, 3)],
+            'vect__max_df': [0.9],
+            'vect__min_df': [0.001, 1],
+            'vect__max_features': [None],
+            'clf__estimator__random_state': [0],
+            'clf__estimator__learning_rate': [0.1, 0.5],
+            'clf__estimator__n_estimators': [50, 100],
+            'clf__estimator__base_estimator__random_state': [0],
+            'clf__estimator__base_estimator__class_weight': [None, 'balanced'],
+            'clf__estimator__base_estimator__splitter': ['best', 'random'],
+            'clf__estimator__base_estimator__min_samples_leaf': [36, 64, 128],
+            'clf__estimator__base_estimator__min_samples_split': [64, 96, 128, 256, 512, 1024]
         }
-    model = Pipeline([
-                ('vect', CountVectorizer(tokenizer=tokenize)),
+        clf = parameters['clf'][0]
+        parameters.pop('clf')
+        pipeline = Pipeline([
+                    ('vect', CountVectorizer()),
+                    ('tf-idf', TfidfTransformer()),
+                    ('clf', MultiOutputClassifier(AdaBoostClassifier(base_estimator=clf)))
+                ])
+        model = GridSearchCV(pipeline, param_grid=parameters, cv=5, verbose=3)
+        return model
+    
+    parameters = {
+        'clf': [DecisionTreeClassifier()],
+        'vect__ngram_range': [(1, 3)],
+        'vect__max_df': [0.9],
+        'vect__min_df': [0.001, 1],
+        'vect__max_features': [None],
+        'clf__estimator__random_state': [0],
+        'clf__estimator__class_weight': [None],
+        'clf__estimator__splitter': ['best', 'random'],
+        'clf__estimator__min_samples_leaf': [36],
+        'clf__estimator__min_samples_split': [512]
+    }
+    clf = parameters['clf'][0]
+    parameters.pop('clf')
+    pipeline = Pipeline([
+                ('vect', CountVectorizer()),
                 ('tf-idf', TfidfTransformer()),
-                ('clf', MultiOutputClassifier(DecisionTreeClassifier()))
+                ('clf', MultiOutputClassifier(clf))
             ])
-    model = GridSearchCV(model, param_grid=parameters, cv=5, verbose=3)
+    model = GridSearchCV(pipeline, param_grid=parameters, cv=5, verbose=3)
     return model
 
 
@@ -114,7 +150,24 @@ def evaluate_model(model, X_test, Y_test, category_names):
         category_names (list): List with labels names.
     '''
     Y_hat = model.predict(X_test)
-    report = classification_report(Y_test.loc[:,:], Y_hat[:,:], zero_division=1, target_names=category_names)
+    report = classification_report(Y_test.iloc[:,:], Y_hat[:,:], zero_division=1, target_names=category_names)
+    
+    # Logging off
+    logging = False
+    if logging:
+        with open('evaluation.txt', 'w') as f:
+            f.write(report)
+            f.write('\n'*3)
+            f.write('Labels:')
+            f.write(str(Y_test.iloc[:10, :].values))
+            f.write('\n'*3)
+            f.write('Prediction:')
+            f.write(str(Y_hat[:10, :]))
+            f.write('\n'*3)
+            f.write(str(model.get_params()))
+            f.write('\n'*3)
+            f.write(str(model.best_estimator_))
+    
     print(report)
 
 
@@ -125,17 +178,26 @@ def save_model(model, model_filepath):
         model (sklearn.model_selection.GridSearchCV): GridSearchCV instance with the best estimator and parameters.
         model_filepath (str): Destination.
     '''
-    pickle.dump(model, open(model_filepath, 'wb'))
-    return True
+    pickle.dump(model.best_estimator_, open(model_filepath, 'wb'))
 
 
 def main():
+    '''1. Load data from SQL.
+       2. Split data into train and test sets.
+       3. Build pipeline model.
+       4. Train multioutput classification model on train set.
+       5. Evaluate model on test set.
+       6. Save model into pickle file.
+    '''
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y, category_names = load_data(database_filepath)
-        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
-
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.05, random_state=0)
+        
+        print(f'X: {X.shape}, Y: {Y.shape}\n \
+            X_train: {X_train.shape}, Y_train: {Y_train.shape}, X_test: {X_test.shape}, Y_test: {Y_test.shape}')
+        
         print('Building model...')
         model = build_model()
         

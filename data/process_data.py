@@ -5,6 +5,15 @@ from sqlalchemy import create_engine
 
 
 def load_data(messages_filepath, categories_filepath):
+    '''Load messages and categories from csv tables.
+    
+    Args:
+        messages_filepath (str): Path to messages csv table.
+        categories_filepath (str): Path to categories csv table.
+        
+    Returns:
+        df (pandas.DataFrame): Merged dataframe.
+    '''
     df_messages = pd.read_csv(messages_filepath, dtype={'id':'int16'}) 
     df_categories = pd.read_csv(categories_filepath, dtype={'id':'int16'})
     df = df_messages.merge(df_categories, on='id')
@@ -12,6 +21,14 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
+    '''Clean and expand df labels of categories into rows.
+    
+    Args:
+        df (pandas.DataFrame): Dataframe with messages and categories.
+        
+    Returns:
+        df (pandas.DataFrame): Cleaned dataframe.
+    '''
     df = df.drop_duplicates()
     df_categories = df['categories'].str.split(pat=';', expand=True)
     labels = df_categories.loc[0, :].apply(lambda x: x[:-2]).to_list()
@@ -24,11 +41,21 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
+    '''Insert clean data into SQLite DB.
+    
+    Args:
+        df (pandas.DataFrame): Dataframe with messages and categories.
+        database_filename (str): Path to SQLite DB.
+    '''
     engine = create_engine('sqlite:///' + database_filename)
     df.to_sql('messages', engine, index=False)
 
 
 def main():
+    '''1. Load data from csv tables.
+       2. Clean data.
+       3. Save data to SQL.
+    '''
     if len(sys.argv) == 4:
 
         messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
