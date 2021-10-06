@@ -1,5 +1,7 @@
 # Disaster Response Pipeline Project
 
+![Trained classifier result from input text "Need tents, water and food. Children are sick with fever."](pics/drp_intro.png "Classifier result")
+
 ## The goal of this project:
 
 - To train a machine learning model that will classify any input message into 36 categories.
@@ -61,6 +63,52 @@
 	- Trained model saved in pickle file
 	- Plotly charts
 	
+
+## Trained model evaluation:
+
+| Label | Precision | Recall | F1-score | Support |
+|---|---|---|---|---|
+| related | 0.83 | 0.89 | 0.86 | 1002 |
+| request | 0.69 | 0.50 | 0.58 | 224 |
+| offer | 1.00 | 0.00 | 0.00 | 6 |
+| aid_related | 0.71 | 0.63 | 0.67 | 536 |
+| medical_help | 0.66 | 0.33 | 0.44 | 94 |
+| medical_products | 0.62 | 0.25 | 0.36 | 64 |
+| search_and_rescue | 0.64 | 0.16 | 0.26 | 43 |
+| security | 1.00 | 0.00 | 0.00 | 29 |
+| military | 0.60 | 0.33 | 0.43 | 45 |
+| child_alone | 1.00 | 1.00 | 1.00 | 0 |
+| water | 0.81 | 0.57 | 0.67 | 87 |
+| food | 0.80 | 0.82 | 0.81 | 131 |
+| shelter | 0.80 | 0.59 | 0.68 | 119 |
+| clothing | 0.71 | 0.80 | 0.75 | 15 |
+| money | 0.83 | 0.22 | 0.34 | 23 |
+| missing_people | 0.57 | 0.20 | 0.30 | 20 |
+| refugees | 0.57 | 0.26 | 0.36 | 50 |
+| death | 0.71 | 0.58 | 0.64 | 62 |
+| other_aid | 0.73 | 0.14 | 0.24 | 157 |
+| infrastructure_related | 1.00 | 0.00 | 0.00 | 75 |
+| transport | 0.82 | 0.22 | 0.34 | 65 |
+| buildings | 0.52 | 0.39 | 0.45 | 66 |
+| electricity | 0.56 | 0.17 | 0.26 | 29 |
+| tools | 1.00 | 0.00 | 0.00 | 10 |
+| hospitals | 1.00 | 0.00 | 0.00 | 11 |
+| shops | 1.00 | 0.00 | 0.00 | 4 |
+| aid_centers | 1.00 | 0.00 | 0.00 | 15 |
+| other_infrastructure | 1.00 | 0.00 | 0.00 | 54 |
+| weather_related | 0.83 | 0.73 | 0.77 | 364 |
+| floods | 0.92 | 0.56 | 0.69 | 99 |
+| storm | 0.73 | 0.52 | 0.61 | 130 |
+| fire | 1.00 | 0.14 | 0.25 | 14 |
+| earthquake | 0.89 | 0.82 | 0.85 | 119 |
+| cold | 0.73 | 0.42 | 0.53 | 19 |
+| other_weather | 0.50 | 0.13 | 0.21 | 68 |
+| direct_report | 0.67 | 0.48 | 0.56 | 261 |
+|---|---|---|---|---|
+| micro avg | 0.77 | 0.58 | 0.67 | 4110 |
+| macro avg | 0.79 | 0.36 | 0.41 | 4110 |
+| weighted avg | 0.77 | 0.58 | 0.63 | 4110 |
+| samples avg | 0.76 | 0.73 | 0.60 | 4110 |
 	
 ### Requirements
 
