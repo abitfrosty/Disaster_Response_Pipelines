@@ -4,6 +4,8 @@ etc/
 share/
 lib64
 pyvenv.cfg
+disaster*.ipynb
+testing*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

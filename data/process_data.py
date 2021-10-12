@@ -37,6 +37,14 @@ def clean_data(df):
         df_categories[column] = df_categories[column].apply(lambda x: 0 if x[-1] == '0' else 1).astype('int8')
     df = pd.concat([df, df_categories], axis=1)
     df = df.drop(columns=['categories'])
+    # filling duplicated rows that have different labels with maximum value
+    df = df.groupby('id').transform('max')
+    df = df.drop_duplicates()
+    # dropping rows that contain nulls
+    df = df.dropna(how='all', subset=labels)
+    # converting to small int to optimize size
+    df[labels] = df[labels].astype('int8')
+    df = df.reset_index(drop=True)
     return df
 
 

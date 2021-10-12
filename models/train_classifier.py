@@ -11,6 +11,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report
+from sklearn.neural_network import MLPClassifier
 
 import nltk
 from nltk import word_tokenize
@@ -116,18 +117,17 @@ def build_model():
                 ])
         model = GridSearchCV(pipeline, param_grid=parameters, cv=5, verbose=3)
         return model
-    
     parameters = {
         'clf': [DecisionTreeClassifier()],
-        'vect__ngram_range': [(1, 3)],
-        'vect__max_df': [0.9],
+        'vect__ngram_range': [(1, 2)],
+        'vect__max_df': [0.75, 0.9, 1.0],
         'vect__min_df': [0.001, 1],
         'vect__max_features': [None],
         'clf__estimator__random_state': [0],
         'clf__estimator__class_weight': [None],
         'clf__estimator__splitter': ['best', 'random'],
-        'clf__estimator__min_samples_leaf': [36],
-        'clf__estimator__min_samples_split': [512]
+        'clf__estimator__min_samples_leaf': [36, 64],
+        'clf__estimator__min_samples_split': [256, 512, 768, 1024]
     }
     clf = parameters['clf'][0]
     parameters.pop('clf')
@@ -153,15 +153,15 @@ def evaluate_model(model, X_test, Y_test, category_names):
     report = classification_report(Y_test.iloc[:,:], Y_hat[:,:], zero_division=1, target_names=category_names)
     
     # Logging off
-    logging = False
+    logging = True
     if logging:
         with open('evaluation.txt', 'w') as f:
             f.write(report)
             f.write('\n'*3)
-            f.write('Labels:')
+            f.write('Labels:\n')
             f.write(str(Y_test.iloc[:10, :].values))
             f.write('\n'*3)
-            f.write('Prediction:')
+            f.write('Prediction:\n')
             f.write(str(Y_hat[:10, :]))
             f.write('\n'*3)
             f.write(str(model.get_params()))

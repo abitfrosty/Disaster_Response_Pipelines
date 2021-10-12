@@ -66,49 +66,49 @@
 
 ## Trained model evaluation:
 
-| Label | Precision | Recall | F1-score | Support |
+|Label|Precision|Recall|F1-score|Support|
 |---|---|---|---|---|
-| related | 0.83 | 0.89 | 0.86 | 1002 |
-| request | 0.69 | 0.50 | 0.58 | 224 |
-| offer | 1.00 | 0.00 | 0.00 | 6 |
-| aid_related | 0.71 | 0.63 | 0.67 | 536 |
-| medical_help | 0.66 | 0.33 | 0.44 | 94 |
-| medical_products | 0.62 | 0.25 | 0.36 | 64 |
-| search_and_rescue | 0.64 | 0.16 | 0.26 | 43 |
-| security | 1.00 | 0.00 | 0.00 | 29 |
-| military | 0.60 | 0.33 | 0.43 | 45 |
-| child_alone | 1.00 | 1.00 | 1.00 | 0 |
-| water | 0.81 | 0.57 | 0.67 | 87 |
-| food | 0.80 | 0.82 | 0.81 | 131 |
-| shelter | 0.80 | 0.59 | 0.68 | 119 |
-| clothing | 0.71 | 0.80 | 0.75 | 15 |
-| money | 0.83 | 0.22 | 0.34 | 23 |
-| missing_people | 0.57 | 0.20 | 0.30 | 20 |
-| refugees | 0.57 | 0.26 | 0.36 | 50 |
-| death | 0.71 | 0.58 | 0.64 | 62 |
-| other_aid | 0.73 | 0.14 | 0.24 | 157 |
-| infrastructure_related | 1.00 | 0.00 | 0.00 | 75 |
-| transport | 0.82 | 0.22 | 0.34 | 65 |
-| buildings | 0.52 | 0.39 | 0.45 | 66 |
-| electricity | 0.56 | 0.17 | 0.26 | 29 |
-| tools | 1.00 | 0.00 | 0.00 | 10 |
-| hospitals | 1.00 | 0.00 | 0.00 | 11 |
-| shops | 1.00 | 0.00 | 0.00 | 4 |
-| aid_centers | 1.00 | 0.00 | 0.00 | 15 |
-| other_infrastructure | 1.00 | 0.00 | 0.00 | 54 |
-| weather_related | 0.83 | 0.73 | 0.77 | 364 |
-| floods | 0.92 | 0.56 | 0.69 | 99 |
-| storm | 0.73 | 0.52 | 0.61 | 130 |
-| fire | 1.00 | 0.14 | 0.25 | 14 |
-| earthquake | 0.89 | 0.82 | 0.85 | 119 |
-| cold | 0.73 | 0.42 | 0.53 | 19 |
-| other_weather | 0.50 | 0.13 | 0.21 | 68 |
-| direct_report | 0.67 | 0.48 | 0.56 | 261 |
+|related|0.83|0.91|0.87|1000|
+|request|0.69|0.44|0.54|222|
+|offer|1.00|0.00|0.00|13|
+|aid_related|0.70|0.60|0.64|551|
+|medical_help|0.48|0.25|0.33|105|
+|medical_products|0.79|0.39|0.52|57|
+|search_and_rescue|0.71|0.27|0.39|37|
+|security|1.00|0.00|0.00|19|
+|military|0.69|0.40|0.51|50|
+|child_alone|1.00|1.00|1.00|0|
+|water|0.73|0.61|0.67|80|
+|food|0.77|0.74|0.75|142|
+|shelter|0.82|0.66|0.73|108|
+|clothing|0.83|0.75|0.79|20|
+|money|0.33|0.08|0.13|38|
+|missing_people|0.83|0.24|0.37|21|
+|refugees|0.61|0.39|0.47|44|
+|death|0.80|0.56|0.66|70|
+|other_aid|0.47|0.17|0.25|164
+|infrastructure_related|1.00|0.02|0.05|84|
+|transport|0.77|0.15|0.26|65|
+|buildings|0.39|0.16|0.22|58|
+|electricity|0.48|0.41|0.44|27|
+|tools|1.00|0.00|0.00|7|
+|hospitals|1.00|0.00|0.00|15|
+|shops|1.00|0.00|0.00|6|
+|aid_centers|1.00|0.00|0.00|15|
+|other_infrastructure|1.00|0.00|0.00|58|
+|weather_related|0.83|0.71|0.77|359|
+|floods|0.84|0.49|0.62|100|
+|storm|0.67|0.67|0.67|111|
+|fire|0.75|0.40|0.52|15|
+|earthquake|0.90|0.83|0.86|134|
+|cold|0.67|0.45|0.54|22|
+|other_weather|0.67|0.13|0.22|76|
+|direct_report|0.60|0.43|0.50|234
 |---|---|---|---|---|
-| micro avg | 0.77 | 0.58 | 0.67 | 4110 |
-| macro avg | 0.79 | 0.36 | 0.41 | 4110 |
-| weighted avg | 0.77 | 0.58 | 0.63 | 4110 |
-| samples avg | 0.76 | 0.73 | 0.60 | 4110 |
+|micro avg|0.76|0.58|0.66|4127|
+|macro avg|0.77|0.37|0.42|4127|
+|weighted avg|0.75|0.58|0.62|4127|
+|samples avg|0.74|0.74|0.60|4127|
 	
 ### Requirements
 
@@ -141,13 +141,19 @@
 1. Run the following commands in the project's root directory to set up your database and model.
 
     - To run ETL pipeline that cleans data and stores in database
-		`python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
+		```sh
+		python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db
+		```
 		
     - To run ML pipeline that trains classifier and saves
-        `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
+        ```sh
+        python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl
+        ```
 
 2. Run the following command in the app's directory to run your web app.
 
-    `python run.py`
+    ```sh
+    python run.py
+    ```
 
 3. Go to http://0.0.0.0:3001/
