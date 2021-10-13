@@ -3,6 +3,7 @@ import pandas as pd
 import pickle
 import re
 from sqlalchemy import create_engine
+from joblib import parallel_backend
 
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.multioutput import MultiOutputClassifier
@@ -95,6 +96,7 @@ def build_model():
     if using_adaboost:
         parameters = {
             'clf': [DecisionTreeClassifier()],
+            'vect__tokenizer': [tokenize],
             'vect__ngram_range': [(1, 3)],
             'vect__max_df': [0.9],
             'vect__min_df': [0.001, 1],
@@ -119,15 +121,16 @@ def build_model():
         return model
     parameters = {
         'clf': [DecisionTreeClassifier()],
-        'vect__ngram_range': [(1, 2)],
+        'vect__tokenizer': [tokenize],
+        'vect__ngram_range': [(1, 3)],
         'vect__max_df': [0.75, 0.9, 1.0],
         'vect__min_df': [0.001, 1],
         'vect__max_features': [None],
         'clf__estimator__random_state': [0],
         'clf__estimator__class_weight': [None],
-        'clf__estimator__splitter': ['best', 'random'],
-        'clf__estimator__min_samples_leaf': [36, 64],
-        'clf__estimator__min_samples_split': [256, 512, 768, 1024]
+        'clf__estimator__splitter': ['best'],
+        'clf__estimator__min_samples_leaf': [36],
+        'clf__estimator__min_samples_split': [256, 512, 768]
     }
     clf = parameters['clf'][0]
     parameters.pop('clf')
@@ -136,7 +139,14 @@ def build_model():
                 ('tf-idf', TfidfTransformer()),
                 ('clf', MultiOutputClassifier(clf))
             ])
-    model = GridSearchCV(pipeline, param_grid=parameters, cv=5, verbose=3)
+    with parallel_backend('multiprocessing'):
+        model = GridSearchCV(pipeline, param_grid=parameters, cv=5, verbose=3, n_jobs=-1)
+    return model
+
+
+def train_model(model, X_train, Y_train):
+    with parallel_backend('multiprocessing'):
+        model.fit(X_train, Y_train)
     return model
 
 
@@ -153,7 +163,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
     report = classification_report(Y_test.iloc[:,:], Y_hat[:,:], zero_division=1, target_names=category_names)
     
     # Logging off
-    logging = True
+    logging = False
     if logging:
         with open('evaluation.txt', 'w') as f:
             f.write(report)
@@ -202,7 +212,7 @@ def main():
         model = build_model()
         
         print('Training model...')
-        model.fit(X_train, Y_train)
+        model = train_model(model, X_train, Y_train)
         
         print('Evaluating model...')
         evaluate_model(model, X_test, Y_test, category_names)

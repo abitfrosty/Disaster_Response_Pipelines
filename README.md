@@ -10,7 +10,19 @@
 	
 ## The dataset:
 
-- Data contains 26248 samples and is stored in 2 csv tables: disaster_categories.csv, disaster_messages.csv. The data is imbalanced in such way that some categories are present much frequently ("related" has 20094 occurrences without duplicates) than others ("child_alone" has 0 occurences).
+```sh
+sqlite> SELECT COUNT(*) FROM messages;
+COUNT(*)
+26180
+sqlite> SELECT SUM(related) FROM messages;
+SUM(related)
+20067
+sqlite> SELECT SUM(child_alone) FROM messages;
+SUM(child_alone)
+0
+```
+
+- Cleaned data contains 26180 samples and is stored in 2 csv tables: disaster_categories.csv, disaster_messages.csv. The data is imbalanced in such way that some categories are present much frequently ("related" has 20067 occurrences) than others ("child_alone" has 0 occurences).
 
 	- Table "disaster_categories.csv" contains columns:
 	
@@ -68,48 +80,49 @@
 
 |Label|Precision|Recall|F1-score|Support|
 |---|---|---|---|---|
-|related|0.83|0.91|0.87|1000|
-|request|0.69|0.44|0.54|222|
-|offer|1.00|0.00|0.00|13|
-|aid_related|0.70|0.60|0.64|551|
-|medical_help|0.48|0.25|0.33|105|
-|medical_products|0.79|0.39|0.52|57|
-|search_and_rescue|0.71|0.27|0.39|37|
-|security|1.00|0.00|0.00|19|
-|military|0.69|0.40|0.51|50|
+|related|0.84|0.88|0.86|984|
+|request|0.69|0.39|0.50|236|
+|offer|1.00|0.00|0.00|10|
+|aid_related|0.73|0.66|0.69|550|
+|medical_help|0.52|0.10|0.17|106|
+|medical_products|0.60|0.25|0.35|60|
+|search_and_rescue|0.50|0.13|0.21|30|
+|security|1.00|0.00|0.00|24|
+|military|0.59|0.36|0.45|53|
 |child_alone|1.00|1.00|1.00|0|
-|water|0.73|0.61|0.67|80|
-|food|0.77|0.74|0.75|142|
-|shelter|0.82|0.66|0.73|108|
-|clothing|0.83|0.75|0.79|20|
-|money|0.33|0.08|0.13|38|
-|missing_people|0.83|0.24|0.37|21|
-|refugees|0.61|0.39|0.47|44|
-|death|0.80|0.56|0.66|70|
-|other_aid|0.47|0.17|0.25|164
-|infrastructure_related|1.00|0.02|0.05|84|
-|transport|0.77|0.15|0.26|65|
-|buildings|0.39|0.16|0.22|58|
-|electricity|0.48|0.41|0.44|27|
+|water|0.71|0.80|0.75|86|
+|food|0.80|0.78|0.79|137|
+|shelter|0.71|0.63|0.67|112|
+|clothing|0.53|0.50|0.51|20|
+|money|1.00|0.00|0.00|29|
+|missing_people|0.40|0.29|0.33|7|
+|refugees|0.72|0.32|0.44|57|
+|death|0.75|0.60|0.67|55|
+|other_aid|0.57|0.14|0.22|174|
+infrastructure_related|1.00|0.00|0.00|83|
+|transport|0.56|0.27|0.37|55|
+|buildings|0.79|0.36|0.50|72|
+|electricity|0.47|0.25|0.33|32|
 |tools|1.00|0.00|0.00|7|
-|hospitals|1.00|0.00|0.00|15|
-|shops|1.00|0.00|0.00|6|
-|aid_centers|1.00|0.00|0.00|15|
-|other_infrastructure|1.00|0.00|0.00|58|
-|weather_related|0.83|0.71|0.77|359|
-|floods|0.84|0.49|0.62|100|
-|storm|0.67|0.67|0.67|111|
-|fire|0.75|0.40|0.52|15|
-|earthquake|0.90|0.83|0.86|134|
-|cold|0.67|0.45|0.54|22|
-|other_weather|0.67|0.13|0.22|76|
-|direct_report|0.60|0.43|0.50|234
+|hospitals|1.00|0.00|0.00|11|
+|shops|1.00|0.00|0.00|7|
+|aid_centers|0.00|0.00|0.00|16|
+|other_infrastructure|1.00|0.00|0.00|56|
+|weather_related|0.82|0.81|0.81|361|
+|floods|0.91|0.62|0.74|102|
+|storm|0.73|0.67|0.70|126|
+|fire|1.00|0.00|0.00|9|
+|earthquake|0.86|0.88|0.87|128|
+|cold|0.58|0.26|0.36|27|
+|other_weather|0.67|0.19|0.29|75|
+|direct_report|0.60|0.38|0.47|257|
 |---|---|---|---|---|
-|micro avg|0.76|0.58|0.66|4127|
-|macro avg|0.77|0.37|0.42|4127|
-|weighted avg|0.75|0.58|0.62|4127|
-|samples avg|0.74|0.74|0.60|4127|
-	
+|micro|avg|0.77|0.58|0.66|4154|
+|macro|avg|0.74|0.35|0.39|4154|
+|weighted|avg|0.75|0.58|0.62|4154|
+|samples|avg|0.77|0.73|0.60|4154|
+
+
 ### Requirements
 
 - click==8.0.1
