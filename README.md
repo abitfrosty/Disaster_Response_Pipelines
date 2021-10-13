@@ -99,7 +99,7 @@ SUM(child_alone)
 |refugees|0.72|0.32|0.44|57|
 |death|0.75|0.60|0.67|55|
 |other_aid|0.57|0.14|0.22|174|
-infrastructure_related|1.00|0.00|0.00|83|
+|infrastructure_related|1.00|0.00|0.00|83|
 |transport|0.56|0.27|0.37|55|
 |buildings|0.79|0.36|0.50|72|
 |electricity|0.47|0.25|0.33|32|
@@ -117,10 +117,10 @@ infrastructure_related|1.00|0.00|0.00|83|
 |other_weather|0.67|0.19|0.29|75|
 |direct_report|0.60|0.38|0.47|257|
 |---|---|---|---|---|
-|micro|avg|0.77|0.58|0.66|4154|
-|macro|avg|0.74|0.35|0.39|4154|
-|weighted|avg|0.75|0.58|0.62|4154|
-|samples|avg|0.77|0.73|0.60|4154|
+|micro avg|0.77|0.58|0.66|4154|
+|macro avg|0.74|0.35|0.39|4154|
+|weighted avg|0.75|0.58|0.62|4154|
+|samples avg|0.77|0.73|0.60|4154|
 
 
 ### Requirements
