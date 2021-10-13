@@ -78,49 +78,49 @@ SUM(child_alone)
 
 ## Trained model evaluation:
 
-|Label|Precision|Recall|F1-score|Support|
+|Labels|Precision|Recall|F1-score|Support|
 |---|---|---|---|---|
-|related|0.84|0.88|0.86|984|
-|request|0.69|0.39|0.50|236|
+|related|0.84|0.87|0.85|984|
+|request|0.67|0.41|0.51|236|
 |offer|1.00|0.00|0.00|10|
-|aid_related|0.73|0.66|0.69|550|
-|medical_help|0.52|0.10|0.17|106|
-|medical_products|0.60|0.25|0.35|60|
-|search_and_rescue|0.50|0.13|0.21|30|
+|aid_related|0.72|0.63|0.67|550|
+|medical_help|0.61|0.24|0.34|106|
+|medical_products|0.66|0.32|0.43|60|
+|search_and_rescue|0.67|0.27|0.38|30|
 |security|1.00|0.00|0.00|24|
-|military|0.59|0.36|0.45|53|
+|military|0.62|0.40|0.48|53|
 |child_alone|1.00|1.00|1.00|0|
-|water|0.71|0.80|0.75|86|
-|food|0.80|0.78|0.79|137|
-|shelter|0.71|0.63|0.67|112|
-|clothing|0.53|0.50|0.51|20|
-|money|1.00|0.00|0.00|29|
-|missing_people|0.40|0.29|0.33|7|
-|refugees|0.72|0.32|0.44|57|
-|death|0.75|0.60|0.67|55|
-|other_aid|0.57|0.14|0.22|174|
-|infrastructure_related|1.00|0.00|0.00|83|
-|transport|0.56|0.27|0.37|55|
-|buildings|0.79|0.36|0.50|72|
-|electricity|0.47|0.25|0.33|32|
+|water|0.67|0.78|0.72|86|
+|food|0.79|0.77|0.78|137|
+|shelter|0.76|0.61|0.67|112|
+|clothing|0.56|0.50|0.53|20|
+|money|0.43|0.10|0.17|29|
+|missing_people|0.67|0.29|0.40|7|
+|refugees|0.74|0.30|0.42|57|
+|death|0.71|0.64|0.67|55|
+|other_aid|0.48|0.11|0.19|174|
+|infrastructure_related|0.44|0.05|0.09|83|
+|transport|0.75|0.16|0.27|55|
+|buildings|0.86|0.26|0.40|72|
+|electricity|0.63|0.38|0.47|32|
 |tools|1.00|0.00|0.00|7|
-|hospitals|1.00|0.00|0.00|11|
+|hospitals|0.00|0.00|0.00|11|
 |shops|1.00|0.00|0.00|7|
-|aid_centers|0.00|0.00|0.00|16|
+|aid_centers|1.00|0.00|0.00|16|
 |other_infrastructure|1.00|0.00|0.00|56|
-|weather_related|0.82|0.81|0.81|361|
-|floods|0.91|0.62|0.74|102|
-|storm|0.73|0.67|0.70|126|
-|fire|1.00|0.00|0.00|9|
+|weather_related|0.81|0.80|0.80|361|
+|floods|0.85|0.60|0.70|102|
+|storm|0.70|0.70|0.70|126|
+|fire|0.67|0.67|0.67|9|
 |earthquake|0.86|0.88|0.87|128|
-|cold|0.58|0.26|0.36|27|
-|other_weather|0.67|0.19|0.29|75|
-|direct_report|0.60|0.38|0.47|257|
+|cold|0.59|0.37|0.45|27|
+|other_weather|0.56|0.27|0.36|75|
+|direct_report|0.63|0.36|0.46|257|
 |---|---|---|---|---|
-|micro avg|0.77|0.58|0.66|4154|
-|macro avg|0.74|0.35|0.39|4154|
-|weighted avg|0.75|0.58|0.62|4154|
-|samples avg|0.77|0.73|0.60|4154|
+|micro|avg|0.76|0.58|0.66|4154|
+|macro|avg|0.72|0.38|0.43|4154|
+|weighted|avg|0.74|0.58|0.62|4154|
+|samples|avg|0.77|0.72|0.60|4154|
 
 
 ### Requirements

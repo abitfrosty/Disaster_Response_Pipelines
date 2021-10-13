@@ -77,7 +77,8 @@ def tokenize(text):
             # Lemmatization
             token = lemmatizer.lemmatize(word)
             # Stemming
-            token = stemmer.stem(token)
+            # Not using both
+            #token = stemmer.stem(token)
             words.append(token)
     return words
 
@@ -91,7 +92,7 @@ def build_model():
     Returns:
         words (list): Tokens.
     '''
-    # Adaboost off due to much cpu time and recources consumption
+    # Adaboost off due to much cpu time and resources consumption
     using_adaboost = False
     if using_adaboost:
         parameters = {
