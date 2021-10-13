@@ -31,7 +31,7 @@ def clean_data(df):
     '''
     df = df.drop_duplicates()
     df_categories = df['categories'].str.split(pat=';', expand=True)
-    labels = df_categories.loc[0, :].apply(lambda x: x[:-2]).to_list()
+    labels = list(df_categories.loc[0, :].apply(lambda x: x[:-2]))
     df_categories.columns = labels
     for column in df_categories.columns:
         df_categories[column] = df_categories[column].apply(lambda x: 0 if x[-1] == '0' else 1)
